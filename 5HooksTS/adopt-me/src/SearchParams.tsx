@@ -3,10 +3,10 @@ import { useState } from "react";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
-  const [location, setLocation] = useState("");
-  const [animal, setAnimal] = useState("");
-  const [breed, setBreed] = useState("");
-  const breeds = [];
+  const [location, setLocation] = useState<string>("");
+  const [animal, setAnimal] = useState<string>("");
+  const [breed, setBreed] = useState<string>("");
+  const breeds: string[] = [];
 
   return (
     <div className="search-params">
