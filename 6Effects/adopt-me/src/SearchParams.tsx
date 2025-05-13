@@ -1,15 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Pet from "./Pet";
 
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
+type PetResponse = {
+  id: string;
+  name: string;
+  animal: string;
+  breed: string;
+  city: string;
+  state: string;
+  description: string;
+  images: string[];
+};
+
+type PetsResponse = {
+  pets: PetResponse[];
+};
+
 const SearchParams = () => {
+  const [pets, setPets] = useState<PetResponse[]>([]);
   const [location, setLocation] = useState<string>("");
   const [animal, setAnimal] = useState<string>("");
   const [breed, setBreed] = useState<string>("");
   const breeds: string[] = [];
 
+  useEffect(() => {
+    requestPets();
+  }, []);
+
+  async function requestPets(): Promise<void> {
+    const res = await fetch(
+      `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
+    );
+    const json: PetsResponse = await res.json();
+  
+    setPets(json.pets);
+  }
+
   return (
     <div className="search-params">
+      {
+        pets.map((pet) => (
+          <Pet name={pet.name} animal={pet.animal} breed={pet.breed} key={pet.id} />
+        ))
+      }
       <form>
         <label htmlFor="location">
           Location
